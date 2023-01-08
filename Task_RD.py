@@ -7,6 +7,10 @@ Created on Mon Jan  2 16:04:44 2023
 import cv2
 import threading
 import queue
+
+global test_capture
+global test_sample
+
 # %%cell 1
 #### Comment 1 Create a queue for sending frames from ThreadA to ThreadB
 frame_queue = queue.Queue()
@@ -17,9 +21,12 @@ class ThreadA(threading.Thread):
         threading.Thread.__init__(self)
     
     def run(self):
+        
+        global test_capture
+        test_capture = capture
+        
 #### Comment 2 Load the video
         capture = cv2.VideoCapture("source.avi")
-        
         while capture.isOpened():
 #### Comment 3 Read each frame
             ret, frame = capture.read()
@@ -39,6 +46,9 @@ class ThreadB(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
     def run(self):
+        
+        global test_sample
+        test_sample = sample
         
 #### Comment 6 Load the sample image
         sample = cv2.imread("sample.png")
